@@ -2,8 +2,81 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import { useState, useRef, ChangeEvent } from 'react';
 
 const Home: NextPage = () => {
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      // Check if file is an audio file
+      if (file.type.startsWith('audio/')) {
+        setAudioFile(file);
+        // Create a URL for the audio file
+        const url = URL.createObjectURL(file);
+        setAudioUrl(url);
+      } else {
+        alert('Please select an audio file');
+      }
+    }
+  };
+  
+  const handleUpload = async () => {
+    if (!audioFile) return;
+    
+    setIsUploading(true);
+    setUploadProgress(0);
+    
+    // Simulate upload progress
+    const interval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 95) {
+          clearInterval(interval);
+          return 95;
+        }
+        return prev + 5;
+      });
+    }, 300);
+    
+    try {
+      // Here you would implement the actual file upload logic
+      // For example, using fetch to upload to your backend:
+      /*
+      const formData = new FormData();
+      formData.append('audio', audioFile);
+      
+      const response = await fetch('/api/upload-audio', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Upload successful:', data);
+      } else {
+        throw new Error('Upload failed');
+      }
+      */
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      clearInterval(interval);
+      setUploadProgress(100);
+      alert('Audio file uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Failed to upload audio file');
+    } finally {
+      setIsUploading(false);
+    }
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -17,6 +90,67 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <ConnectButton />
+        
+        <div className="mt-10 w-full max-w-md">
+          <h2 className="text-2xl font-bold mb-4">Audio File Transfer</h2>
+          
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 mb-4 hover:border-blue-500 transition-colors">
+            <input
+              type="file"
+              accept="audio/*"
+              onChange={handleFileChange}
+              className="hidden"
+              id="audio-upload"
+              disabled={isUploading}
+            />
+            <label
+              htmlFor="audio-upload"
+              className="flex flex-col items-center justify-center cursor-pointer"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11v6m0 0l-4-4m4 4l4-4m-4-7a9 9 0 00-9 9h18a9 9 0 00-9-9z" />
+              </svg>
+              <span className="text-sm text-gray-500">
+                {audioFile ? audioFile.name : 'Select an audio file to upload'}
+              </span>
+              <span className="text-xs text-gray-400 mt-1">
+                Supported formats: MP3, WAV, OGG, etc.
+              </span>
+            </label>
+          </div>
+          
+          {audioUrl && (
+            <div className="mb-4">
+              <p className="text-sm font-medium mb-2">Preview:</p>
+              <audio
+                ref={audioRef}
+                src={audioUrl}
+                controls
+                className="w-full"
+              />
+            </div>
+          )}
+          
+          {isUploading ? (
+            <div className="w-full">
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                  style={{ width: `${uploadProgress}%` }}
+                ></div>
+              </div>
+              <p className="text-sm text-center mt-2">{uploadProgress}% Uploaded</p>
+            </div>
+          ) : (
+            <button
+              onClick={handleUpload}
+              disabled={!audioFile}
+              className={`w-full py-2 px-4 rounded-md ${audioFile ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} transition-colors`}
+            >
+              Upload Audio
+            </button>
+          )}
+        </div>
       </main>
 
       <footer className={styles.footer}>

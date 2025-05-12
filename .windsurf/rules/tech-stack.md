@@ -2,4 +2,4 @@
 trigger: always_on
 ---
 
-RainbowKit + wagmi + Next.js using pages router
+Next.js + Tailwind CSS + RainbowKit + wagmi + viem + pnpm
