@@ -2,7 +2,25 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import { useState, useRef, ChangeEvent } from 'react';
+import { useState, useRef, useEffect, ChangeEvent } from 'react';
+
+interface FileItem {
+  id: string;
+  name: string;
+  ipfsHash: string;
+  size: number;
+  datePinned: string;
+  url: string;
+}
+
+// 格式化文件大小
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
 
 const Home: NextPage = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -10,6 +28,8 @@ const Home: NextPage = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [fileType, setFileType] = useState<string>('');
+  const [filesList, setFilesList] = useState<FileItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const mediaRef = useRef<HTMLAudioElement | HTMLImageElement | HTMLVideoElement | null>(null);
   
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,6 +44,28 @@ const Home: NextPage = () => {
       setFileUrl(url);
     }
   };
+  
+  // 获取文件列表
+  const fetchFiles = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/files');
+      if (!response.ok) {
+        throw new Error('Failed to fetch files');
+      }
+      const data = await response.json();
+      setFilesList(data);
+    } catch (error) {
+      console.error('Error fetching files:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 页面加载时获取文件列表
+  useEffect(() => {
+    fetchFiles();
+  }, []);
   
   const handleUpload = async () => {
     if (!file) return;
@@ -57,12 +99,15 @@ const Home: NextPage = () => {
       }
       
       // Get the Pinata URL from the response
-      const pinataUrl = await response.text();
+      const pinataUrl = await response.json();
       
       clearInterval(interval);
       setUploadProgress(100);
       setFileUrl(pinataUrl); // Update the file URL to the Pinata URL
       alert('File uploaded successfully to IPFS via Pinata!');
+      
+      // 刷新文件列表
+      fetchFiles();
     } catch (error) {
       console.error('Error uploading file:', error);
       alert('Failed to upload file');
@@ -86,6 +131,54 @@ const Home: NextPage = () => {
         
         <div className="mt-10 w-full max-w-md">
           <h2 className="text-2xl font-bold mb-4">IPFS File Upload with Pinata</h2>
+          
+          {/* 文件列表 */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-2">已上传文件</h3>
+            {isLoading ? (
+              <div className="flex justify-center items-center py-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+              </div>
+            ) : filesList.length > 0 ? (
+              <div className="border rounded-lg overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">文件名</th>
+                        <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">大小</th>
+                        <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">上传时间</th>
+                        <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {filesList.map((item) => (
+                        <tr key={item.id} className="hover:bg-gray-50">
+                          <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 truncate max-w-[150px]">{item.name}</td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{formatFileSize(item.size)}</td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{new Date(item.datePinned).toLocaleString()}</td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                            <a 
+                              href={item.url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:text-blue-800 hover:underline"
+                            >
+                              查看
+                            </a>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-4 text-gray-500 border rounded-lg">
+                暂无上传文件
+              </div>
+            )}
+          </div>
           
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 mb-4 hover:border-blue-500 transition-colors">
             <input

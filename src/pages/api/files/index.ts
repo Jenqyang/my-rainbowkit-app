@@ -6,6 +6,19 @@ import axios from "axios";
 import { FormData } from "formdata-node";
 import { fileFromPath } from "formdata-node/file-from-path";
 
+interface PinataFile {
+  id: string;
+  ipfs_pin_hash: string;
+  size: number;
+  user_id: string;
+  name: string;
+  date_pinned: string;
+  metadata: {
+    name?: string;
+    keyvalues?: Record<string, string>;
+  };
+}
+
 export const config = {
   api: {
     bodyParser: false,
@@ -16,15 +29,45 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
   // 确保环境变量存在
   if (!process.env.PINATA_JWT || !process.env.NEXT_PUBLIC_GATEWAY_URL) {
     console.error("缺少必要的环境变量");
     return res.status(500).json({ error: "服务器配置错误" });
   }
+
+  if (req.method === "GET") {
+    try {
+      // 调用 Pinata API 获取文件列表
+      const response = await axios.get('https://api.pinata.cloud/data/pinList?status=pinned', {
+        headers: {
+          'Authorization': `Bearer ${process.env.PINATA_JWT}`
+        }
+      });
+      
+      if (response.status !== 200) {
+        throw new Error(`Pinata API error: ${response.statusText}`);
+      }
+      
+      // 处理文件列表，添加网关 URL
+      const files = response.data.rows.map((file: PinataFile) => ({
+        id: file.id,
+        name: file.metadata?.name || file.name,
+        ipfsHash: file.ipfs_pin_hash,
+        size: file.size,
+        datePinned: file.date_pinned,
+        url: `https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${file.ipfs_pin_hash}`
+      }));
+      
+      return res.status(200).json(files);
+    } catch (error) {
+      console.error("Error fetching files:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  } else if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  // POST 请求处理上传文件
 
   try {
     const form = formidable({});
