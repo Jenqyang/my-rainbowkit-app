@@ -2,6 +2,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState, useEffect, ChangeEvent } from 'react';
+import { useAccount } from 'wagmi';
 
 interface FileItem {
   id: string;
@@ -30,6 +31,9 @@ const Home: NextPage = () => {
   const [filesList, setFilesList] = useState<FileItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'explore' | 'upload'>('explore');
+  
+  // 使用 wagmi 的 useAccount hook 检查钱包连接状态
+  const { address, isConnected } = useAccount();
   
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -67,7 +71,7 @@ const Home: NextPage = () => {
   }, []);
   
   const handleUpload = async () => {
-    if (!file) return;
+    if (!file || !isConnected) return;
     
     setIsUploading(true);
     setUploadProgress(0);
@@ -333,15 +337,15 @@ const Home: NextPage = () => {
               <div className="max-w-xl mx-auto">
                 <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 mb-6">
                   <div 
-                    className="border-2 border-dashed border-gray-600 rounded-xl p-8 mb-6 hover:border-indigo-500 transition-colors cursor-pointer"
-                    onClick={() => document.getElementById('file-upload')?.click()}
+                    className={`border-2 border-dashed ${isConnected ? 'border-gray-600 hover:border-indigo-500 cursor-pointer' : 'border-gray-700 opacity-60 cursor-not-allowed'} rounded-xl p-8 mb-6 transition-colors`}
+                    onClick={() => isConnected && document.getElementById('file-upload')?.click()}
                   >
                     <input
                       type="file"
                       onChange={handleFileChange}
                       className="hidden"
                       id="file-upload"
-                      disabled={isUploading}
+                      disabled={isUploading || !isConnected}
                     />
                     <div className="flex flex-col items-center justify-center">
                       <div className="w-16 h-16 mb-4 rounded-full bg-gray-700 flex items-center justify-center">
@@ -350,10 +354,10 @@ const Home: NextPage = () => {
                         </svg>
                       </div>
                       <p className="text-lg font-medium text-gray-300 mb-1">
-                        {file ? file.name : 'Drag & drop or click to upload'}
+                        {file ? file.name : isConnected ? 'Drag & drop or click to upload' : '请先连接钱包'}
                       </p>
                       <p className="text-sm text-gray-500">
-                        Upload any file to IPFS via Pinata
+                        {isConnected ? 'Upload any file to IPFS via Pinata' : '连接钱包后即可上传文件'}
                       </p>
                     </div>
                   </div>
@@ -411,14 +415,14 @@ const Home: NextPage = () => {
                   ) : (
                     <button
                       onClick={handleUpload}
-                      disabled={!file}
+                      disabled={!file || !isConnected}
                       className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-300 ${
-                        file 
+                        file && isConnected
                           ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg hover:shadow-indigo-500/25' 
                           : 'bg-gray-700 text-gray-400 cursor-not-allowed'
                       }`}
                     >
-                      {file ? 'Upload to IPFS' : 'Select a file first'}
+                      {!isConnected ? '请先连接钱包' : file ? 'Upload to IPFS' : 'Select a file first'}
                     </button>
                   )}
                 </div>
