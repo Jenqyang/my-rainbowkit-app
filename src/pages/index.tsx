@@ -146,6 +146,7 @@ const Home: NextPage = () => {
                     <thead className="bg-gray-50">
                       <tr>
                         <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">文件名</th>
+                        <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CID</th>
                         <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">大小</th>
                         <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">上传时间</th>
                         <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
@@ -155,6 +156,18 @@ const Home: NextPage = () => {
                       {filesList.map((item) => (
                         <tr key={item.id} className="hover:bg-gray-50">
                           <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 truncate max-w-[150px]">{item.name}</td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 truncate max-w-[150px]" title={item.ipfsHash}>
+                            <span className="font-mono">{item.ipfsHash.substring(0, 6)}...{item.ipfsHash.substring(item.ipfsHash.length - 4)}</span>
+                            <button 
+                              onClick={() => {navigator.clipboard.writeText(item.ipfsHash); alert('CID 已复制到剪贴板');}}
+                              className="ml-2 text-blue-500 hover:text-blue-700"
+                              title="复制完整 CID"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                              </svg>
+                            </button>
+                          </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{formatFileSize(item.size)}</td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{new Date(item.datePinned).toLocaleString()}</td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
