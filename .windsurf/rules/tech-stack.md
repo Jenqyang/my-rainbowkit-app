@@ -2,4 +2,10 @@
 trigger: always_on
 ---
 
-Next.js + Tailwind CSS + RainbowKit + wagmi + viem + pnpm
+Next.js(page router)
+Tailwind CSS
+RainbowKit
+wagmi
+viem
+Pinata(IPFS storage)
+pnpm

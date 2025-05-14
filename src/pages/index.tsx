@@ -5,35 +5,33 @@ import styles from '../styles/Home.module.css';
 import { useState, useRef, ChangeEvent } from 'react';
 
 const Home: NextPage = () => {
-  const [audioFile, setAudioFile] = useState<File | null>(null);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const [fileType, setFileType] = useState<string>('');
+  const mediaRef = useRef<HTMLAudioElement | HTMLImageElement | HTMLVideoElement | null>(null);
   
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      const file = files[0];
-      // Check if file is an audio file
-      if (file.type.startsWith('audio/')) {
-        setAudioFile(file);
-        // Create a URL for the audio file
-        const url = URL.createObjectURL(file);
-        setAudioUrl(url);
-      } else {
-        alert('Please select an audio file');
-      }
+      const selectedFile = files[0];
+      setFile(selectedFile);
+      setFileType(selectedFile.type);
+      
+      // Create a URL for the file preview
+      const url = URL.createObjectURL(selectedFile);
+      setFileUrl(url);
     }
   };
   
   const handleUpload = async () => {
-    if (!audioFile) return;
+    if (!file) return;
     
     setIsUploading(true);
     setUploadProgress(0);
     
-    // Simulate upload progress
+    // Show upload progress
     const interval = setInterval(() => {
       setUploadProgress(prev => {
         if (prev >= 95) {
@@ -45,34 +43,29 @@ const Home: NextPage = () => {
     }, 300);
     
     try {
-      // Here you would implement the actual file upload logic
-      // For example, using fetch to upload to your backend:
-      /*
+      // Upload file to Pinata through our API route
       const formData = new FormData();
-      formData.append('audio', audioFile);
+      formData.append('file', file);
       
-      const response = await fetch('/api/upload-audio', {
+      const response = await fetch('/api/files', {
         method: 'POST',
         body: formData,
       });
       
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Upload successful:', data);
-      } else {
+      if (!response.ok) {
         throw new Error('Upload failed');
       }
-      */
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Get the Pinata URL from the response
+      const pinataUrl = await response.text();
       
       clearInterval(interval);
       setUploadProgress(100);
-      alert('Audio file uploaded successfully!');
+      setFileUrl(pinataUrl); // Update the file URL to the Pinata URL
+      alert('File uploaded successfully to IPFS via Pinata!');
     } catch (error) {
       console.error('Error uploading file:', error);
-      alert('Failed to upload audio file');
+      alert('Failed to upload file');
     } finally {
       setIsUploading(false);
     }
@@ -92,42 +85,58 @@ const Home: NextPage = () => {
         <ConnectButton />
         
         <div className="mt-10 w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-4">Audio File Transfer</h2>
+          <h2 className="text-2xl font-bold mb-4">IPFS File Upload with Pinata</h2>
           
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 mb-4 hover:border-blue-500 transition-colors">
             <input
               type="file"
-              accept="audio/*"
               onChange={handleFileChange}
               className="hidden"
-              id="audio-upload"
+              id="file-upload"
               disabled={isUploading}
             />
             <label
-              htmlFor="audio-upload"
+              htmlFor="file-upload"
               className="flex flex-col items-center justify-center cursor-pointer"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11v6m0 0l-4-4m4 4l4-4m-4-7a9 9 0 00-9 9h18a9 9 0 00-9-9z" />
               </svg>
               <span className="text-sm text-gray-500">
-                {audioFile ? audioFile.name : 'Select an audio file to upload'}
+                {file ? file.name : 'Select a file to upload'}
               </span>
               <span className="text-xs text-gray-400 mt-1">
-                Supported formats: MP3, WAV, OGG, etc.
+                Upload any file to IPFS via Pinata
               </span>
             </label>
           </div>
           
-          {audioUrl && (
+          {fileUrl && (
             <div className="mb-4">
               <p className="text-sm font-medium mb-2">Preview:</p>
-              <audio
-                ref={audioRef}
-                src={audioUrl}
-                controls
-                className="w-full"
-              />
+              {fileType.startsWith('image/') ? (
+                <img 
+                  src={fileUrl} 
+                  alt="Uploaded file" 
+                  className="w-full rounded-lg max-h-64 object-contain" 
+                />
+              ) : fileType.startsWith('audio/') ? (
+                <audio
+                  controls
+                  src={fileUrl}
+                  className="w-full"
+                />
+              ) : fileType.startsWith('video/') ? (
+                <video
+                  controls
+                  src={fileUrl}
+                  className="w-full max-h-64"
+                />
+              ) : (
+                <div className="p-4 bg-gray-100 rounded-lg">
+                  <p className="text-sm">File uploaded: <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{file?.name}</a></p>
+                </div>
+              )}
             </div>
           )}
           
@@ -144,10 +153,10 @@ const Home: NextPage = () => {
           ) : (
             <button
               onClick={handleUpload}
-              disabled={!audioFile}
-              className={`w-full py-2 px-4 rounded-md ${audioFile ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} transition-colors`}
+              disabled={!file}
+              className={`w-full py-2 px-4 rounded-md ${file ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'} transition-colors`}
             >
-              Upload Audio
+              Upload to IPFS
             </button>
           )}
         </div>
