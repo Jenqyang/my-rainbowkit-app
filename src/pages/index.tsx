@@ -1,7 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useState, useRef, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 
 interface FileItem {
   id: string;
@@ -30,7 +30,6 @@ const Home: NextPage = () => {
   const [filesList, setFilesList] = useState<FileItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'explore' | 'upload'>('explore');
-  const mediaRef = useRef<HTMLAudioElement | HTMLImageElement | HTMLVideoElement | null>(null);
   
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
