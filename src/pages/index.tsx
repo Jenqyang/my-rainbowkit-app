@@ -354,10 +354,10 @@ const Home: NextPage = () => {
                         </svg>
                       </div>
                       <p className="text-lg font-medium text-gray-300 mb-1">
-                        {file ? file.name : isConnected ? 'Drag & drop or click to upload' : '请先连接钱包'}
+                        {file ? file.name : isConnected ? 'Drag & drop or click to upload' : 'Please connect your wallet first'}
                       </p>
                       <p className="text-sm text-gray-500">
-                        {isConnected ? 'Upload any file to IPFS via Pinata' : '连接钱包后即可上传文件'}
+                        {isConnected ? 'Upload any file to IPFS via Pinata' : 'Connect your wallet to start uploading files'}
                       </p>
                     </div>
                   </div>
@@ -422,7 +422,7 @@ const Home: NextPage = () => {
                           : 'bg-gray-700 text-gray-400 cursor-not-allowed'
                       }`}
                     >
-                      {!isConnected ? '请先连接钱包' : file ? 'Upload to IPFS' : 'Select a file first'}
+                      {!isConnected ? 'Connect wallet first' : file ? 'Upload to IPFS' : 'Select a file first'}
                     </button>
                   )}
                 </div>

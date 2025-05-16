@@ -1,5 +1,52 @@
 This is a [RainbowKit](https://rainbowkit.com) + [wagmi](https://wagmi.sh) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-rainbowkit`](/packages/create-rainbowkit).
 
+## Project Structure
+
+```mermaid
+graph TD
+    subgraph Frontend
+        A[pages/_app.tsx] --> B[RainbowKit Provider]
+        A --> C[WagmiProvider]
+        A --> D[QueryClientProvider]
+        B --> E[pages/index.tsx]
+        C --> E
+        D --> E
+    end
+    
+    subgraph Web3
+        F[wagmi.ts] --> C
+        F --> G[Blockchain Networks]
+        G --> G1[Mainnet]
+        G --> G2[Polygon]
+        G --> G3[Optimism]
+        G --> G4[Arbitrum]
+        G --> G5[Base]
+        G --> G6[Sepolia - Optional]
+    end
+    
+    subgraph Backend
+        H[API Routes] --> I[/api/files]
+        I --> J[GET - Fetch Files]
+        I --> K[POST - Upload File]
+        K --> L[Pinata IPFS Service]
+        J --> L
+    end
+    
+    subgraph User Interface
+        E --> M[ConnectButton]
+        E --> N[File Upload]
+        E --> O[File Explorer]
+        M --> P[Wallet Connection]
+        N --> K
+        O --> J
+    end
+    
+    subgraph Styles
+        Q[styles/globals.css] --> A
+        R[styles/Home.module.css] --> E
+    end
+```
+
 ## Getting Started
 
 First, run the development server:
