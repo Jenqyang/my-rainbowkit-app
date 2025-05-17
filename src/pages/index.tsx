@@ -148,9 +148,9 @@ const Home: NextPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
       <Head>
-        <title>NFT Marketplace | IPFS Storage</title>
+        <title>声音胶囊 | 比特币NFT声音存储</title>
         <meta
-          content="NFT Marketplace with IPFS Storage powered by Pinata"
+          content="声音胶囊 - 将珍贵声音永久保存在比特币区块链上"
           name="description"
         />
         <link href="/favicon.ico" rel="icon" />
@@ -162,7 +162,7 @@ const Home: NextPage = () => {
           <div className="flex justify-between h-16 items-center">
             <div className="flex-shrink-0 flex items-center">
               <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
-                NFT Vault
+                声音胶囊
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -176,10 +176,10 @@ const Home: NextPage = () => {
         {/* 英雄区域 */}
         <div className="mb-12 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
-            Decentralized Digital Asset Storage
+            声音胶囊 - 比特币NFT版
           </h1>
           <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-            Store your digital assets securely on IPFS. Perfect for NFTs, digital art, and more.
+            将珍贵的声音永久保存在比特币区块链上。乡音、第一声爸妈、特殊事件录音，永不消逝。
           </p>
         </div>
 
@@ -194,7 +194,7 @@ const Home: NextPage = () => {
                   : 'text-gray-300 hover:bg-gray-700'
               }`}
             >
-              Explore Assets
+              探索声音
             </button>
             <button
               onClick={() => setActiveTab('upload')}
@@ -204,7 +204,7 @@ const Home: NextPage = () => {
                   : 'text-gray-300 hover:bg-gray-700'
               }`}
             >
-              Upload New Asset
+              上传新声音
             </button>
           </div>
         </div>
@@ -214,7 +214,7 @@ const Home: NextPage = () => {
           {activeTab === 'explore' ? (
             <div>
               <h2 className="text-2xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
-                Explore Digital Assets
+                探索声音胶囊
               </h2>
               
               {isLoading ? (
@@ -253,7 +253,7 @@ const Home: NextPage = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                             </svg>
-                            <p className="mt-2 text-gray-300">Audio File</p>
+                            <p className="mt-2 text-gray-300">声音胶囊</p>
                           </div>
                         ) : (
                           <div className="flex flex-col items-center justify-center">
@@ -304,7 +304,7 @@ const Home: NextPage = () => {
                           rel="noopener noreferrer"
                           className="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium rounded-md transition-colors"
                         >
-                          View Asset
+                          播放声音
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
@@ -316,14 +316,14 @@ const Home: NextPage = () => {
               ) : (
                 <div className="text-center py-16 bg-gray-800/50 rounded-xl border border-gray-700">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                   </svg>
-                  <p className="text-xl text-gray-400">No assets found</p>
+                  <p className="text-xl text-gray-400">还没有声音胶囊</p>
                   <button 
                     onClick={() => setActiveTab('upload')}
                     className="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-md transition-colors"
                   >
-                    Upload your first asset
+                    上传你的第一个声音胶囊
                   </button>
                 </div>
               )}
@@ -331,7 +331,7 @@ const Home: NextPage = () => {
           ) : (
             <div>
               <h2 className="text-2xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-orange-400">
-                Upload Digital Asset
+                上传声音胶囊
               </h2>
               
               <div className="max-w-xl mx-auto">
@@ -354,10 +354,10 @@ const Home: NextPage = () => {
                         </svg>
                       </div>
                       <p className="text-lg font-medium text-gray-300 mb-1">
-                        {file ? file.name : isConnected ? 'Drag & drop or click to upload' : 'Please connect your wallet first'}
+                        {file ? file.name : isConnected ? '拖放或点击上传声音文件' : '请先连接你的钱包'}
                       </p>
                       <p className="text-sm text-gray-500">
-                        {isConnected ? 'Upload any file to IPFS via Pinata' : 'Connect your wallet to start uploading files'}
+                        {isConnected ? '上传声音文件到IPFS，然后铭刻到比特币区块链上' : '连接钱包开始上传你的珍贵声音'}
                       </p>
                     </div>
                   </div>
@@ -422,31 +422,31 @@ const Home: NextPage = () => {
                           : 'bg-gray-700 text-gray-400 cursor-not-allowed'
                       }`}
                     >
-                      {!isConnected ? 'Connect wallet first' : file ? 'Upload to IPFS' : 'Select a file first'}
+                      {!isConnected ? '请先连接钱包' : file ? '上传到IPFS' : '请先选择声音文件'}
                     </button>
                   )}
                 </div>
                 
                 <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-                  <h3 className="text-lg font-medium mb-4 text-gray-300">Why store on IPFS?</h3>
+                  <h3 className="text-lg font-medium mb-4 text-gray-300">为什么要保存声音胶囊？</h3>
                   <ul className="space-y-3">
                     <li className="flex items-start">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-400 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-gray-400">Content-addressed storage ensures data integrity</span>
+                      <span className="text-gray-400">永久保存珍贵的乡音和家人声音</span>
                     </li>
                     <li className="flex items-start">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-400 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-gray-400">Decentralized storage prevents single points of failure</span>
+                      <span className="text-gray-400">比特币区块链确保声音记忆永不消逝</span>
                     </li>
                     <li className="flex items-start">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-400 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-gray-400">Perfect for NFT metadata and assets</span>
+                      <span className="text-gray-400">声音NFT可以作为独特的数字收藏品</span>
                     </li>
                   </ul>
                 </div>
@@ -460,7 +460,7 @@ const Home: NextPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 mb-4 md:mb-0">
-              &copy; {new Date().getFullYear()} NFT Vault. Powered by IPFS & Pinata.
+              &copy; {new Date().getFullYear()} 声音胶囊. 由比特币区块链和IPFS提供支持.
             </div>
             <div className="flex space-x-6">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
