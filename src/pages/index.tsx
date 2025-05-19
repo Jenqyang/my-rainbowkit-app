@@ -43,6 +43,11 @@ const Home: NextPage = () => {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
+      // 如果已经有一个本地预览URL，先释放它
+      if (fileUrl && fileUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(fileUrl);
+      }
+      
       const selectedFile = files[0];
       setFile(selectedFile);
       setFileType(selectedFile.type);
@@ -113,6 +118,15 @@ const Home: NextPage = () => {
       
       clearInterval(interval);
       setUploadProgress(100);
+      
+      // 清除本地缓存的文件预览URL
+      if (fileUrl && fileUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(fileUrl);
+      }
+      
+      // 重置文件选择状态，但保留文件URL用于NFT铸造
+      setFile(null);
+      
       setFileUrl(pinataUrl); // Update the file URL to the Pinata URL
       setCurrentFileHash(ipfsHash);
       
@@ -198,11 +212,19 @@ const Home: NextPage = () => {
       
       // 铸造成功后切换到浏览标签
       setTimeout(() => {
+        // 清除本地缓存的文件预览URL和所有状态
+        if (fileUrl && fileUrl.startsWith('blob:')) {
+          URL.revokeObjectURL(fileUrl);
+        }
+        setFileUrl(null);
         setActiveTab('explore');
-        // 重置状态
+        // 重置所有状态
         setShowNftOption(false);
         setIsMintingNft(false);
         setNftMinted(false);
+        setFile(null);
+        setFileType('');
+        setCurrentFileHash('');
       }, 2000);
       
     } catch (error) {
@@ -442,7 +464,7 @@ const Home: NextPage = () => {
                     </div>
                   </div>
                   
-                  {fileUrl && (
+                  {fileUrl && !showNftOption && (
                     <div className="mb-6 bg-gray-900 rounded-lg p-4 border border-gray-700">
                       <p className="text-sm font-medium mb-3 text-gray-300">Preview:</p>
                       <div className="flex justify-center">
@@ -522,8 +544,15 @@ const Home: NextPage = () => {
                               </button>
                               <button
                                 onClick={() => {
+                                  // 清除所有状态
                                   setShowNftOption(false);
                                   setActiveTab('explore');
+                                  setFile(null);
+                                  setFileType('');
+                                  if (fileUrl && fileUrl.startsWith('blob:')) {
+                                    URL.revokeObjectURL(fileUrl);
+                                  }
+                                  setFileUrl(null);
                                 }}
                                 className="flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-300 bg-gray-600 hover:bg-gray-500 text-white"
                               >
