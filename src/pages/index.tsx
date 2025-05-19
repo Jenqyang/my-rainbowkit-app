@@ -281,7 +281,7 @@ const Home: NextPage = () => {
             Sound Capsule - Bitcoin NFT Edition
           </h1>
           <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-            Permanently preserve precious sounds on the Bitcoin blockchain. Hometown accents, baby's first words, special event recordings - never to be lost.
+            Permanently preserve precious sounds on the Bitcoin blockchain. Hometown accents, baby&#39;s first words, special event recordings - never to be lost.
           </p>
         </div>
 
