@@ -31,6 +31,11 @@ const Home: NextPage = () => {
   const [filesList, setFilesList] = useState<FileItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'explore' | 'upload'>('explore');
+  const [showNftOption, setShowNftOption] = useState(false);
+  const [isMintingNft, setIsMintingNft] = useState(false);
+  const [mintProgress, setMintProgress] = useState(0);
+  const [nftMinted, setNftMinted] = useState(false);
+  const [currentFileHash, setCurrentFileHash] = useState<string>('');
   
   // 使用 wagmi 的 useAccount hook 检查钱包连接状态
   const { address, isConnected } = useAccount();
@@ -102,11 +107,14 @@ const Home: NextPage = () => {
       }
       
       // Get the Pinata URL from the response
-      const pinataUrl = await response.json();
+      const pinataData = await response.json();
+      const pinataUrl = pinataData.url || pinataData;
+      const ipfsHash = pinataData.IpfsHash || (typeof pinataData === 'string' ? pinataData.split('/').pop() : '');
       
       clearInterval(interval);
       setUploadProgress(100);
       setFileUrl(pinataUrl); // Update the file URL to the Pinata URL
+      setCurrentFileHash(ipfsHash);
       
       // 使用更现代的通知而不是alert
       const notification = document.createElement('div');
@@ -121,10 +129,13 @@ const Home: NextPage = () => {
         }, 500);
       }, 3000);
       
+      // 显示NFT铸造选项
+      setShowNftOption(true);
+      
       // 刷新文件列表
       fetchFiles();
-      // 上传成功后切换到浏览标签
-      setActiveTab('explore');
+      // 上传成功后保持在上传标签，让用户可以选择铸造NFT
+      // setActiveTab('explore');
     } catch (error) {
       console.error('Error uploading file:', error);
       
@@ -142,6 +153,75 @@ const Home: NextPage = () => {
       }, 3000);
     } finally {
       setIsUploading(false);
+    }
+  };
+  
+  // 模拟铸造NFT的函数
+  const mintNFT = async () => {
+    if (!fileUrl || !currentFileHash || !isConnected) return;
+    
+    setIsMintingNft(true);
+    setMintProgress(0);
+    
+    // 模拟铸造过程
+    const mintInterval = setInterval(() => {
+      setMintProgress(prev => {
+        if (prev >= 95) {
+          clearInterval(mintInterval);
+          return 95;
+        }
+        return prev + 5;
+      });
+    }, 300);
+    
+    try {
+      // 模拟铸造延迟
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // 模拟铸造成功
+      clearInterval(mintInterval);
+      setMintProgress(100);
+      setNftMinted(true);
+      
+      // 铸造成功通知
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-purple-500 text-white px-4 py-2 rounded-lg shadow-lg transform transition-all duration-500 ease-in-out';
+      notification.textContent = '声音成功铸造为NFT！';
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.add('opacity-0');
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 500);
+      }, 3000);
+      
+      // 铸造成功后切换到浏览标签
+      setTimeout(() => {
+        setActiveTab('explore');
+        // 重置状态
+        setShowNftOption(false);
+        setIsMintingNft(false);
+        setNftMinted(false);
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Error minting NFT:', error);
+      
+      // 错误通知
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg';
+      notification.textContent = '铸造NFT失败';
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.add('opacity-0');
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 500);
+      }, 3000);
+    } finally {
+      setIsMintingNft(false);
     }
   };
 
@@ -411,6 +491,48 @@ const Home: NextPage = () => {
                         <p className="text-gray-400">Uploading to IPFS...</p>
                         <p className="text-gray-300 font-medium">{uploadProgress}%</p>
                       </div>
+                    </div>
+                  ) : showNftOption ? (
+                    <div className="w-full">
+                      {isMintingNft ? (
+                        <div className="w-full">
+                          <div className="h-1 w-full bg-gray-700 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300"
+                              style={{ width: `${mintProgress}%` }}
+                            ></div>
+                          </div>
+                          <div className="flex justify-between items-center mt-2 text-sm">
+                            <p className="text-gray-400">铸造NFT中...</p>
+                            <p className="text-gray-300 font-medium">{mintProgress}%</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          <div className="p-4 bg-gray-700/50 rounded-lg border border-gray-600">
+                            <h4 className="text-lg font-medium text-white mb-2">声音已成功上传到IPFS！</h4>
+                            <p className="text-gray-300 mb-4">你现在可以选择将这个声音铸造为NFT，永久保存在区块链上。</p>
+                            <div className="flex space-x-3">
+                              <button
+                                onClick={mintNFT}
+                                disabled={!isConnected}
+                                className="flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-300 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white shadow-lg hover:shadow-purple-500/25"
+                              >
+                                铸造为NFT
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setShowNftOption(false);
+                                  setActiveTab('explore');
+                                }}
+                                className="flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-300 bg-gray-600 hover:bg-gray-500 text-white"
+                              >
+                                稍后再说
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <button
