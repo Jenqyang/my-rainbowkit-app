@@ -200,7 +200,7 @@ const Home: NextPage = () => {
       // 铸造成功通知
       const notification = document.createElement('div');
       notification.className = 'fixed top-4 right-4 bg-purple-500 text-white px-4 py-2 rounded-lg shadow-lg transform transition-all duration-500 ease-in-out';
-      notification.textContent = '声音成功铸造为NFT！';
+      notification.textContent = 'Sound successfully minted as NFT!';
       document.body.appendChild(notification);
       
       setTimeout(() => {
@@ -233,7 +233,7 @@ const Home: NextPage = () => {
       // 错误通知
       const notification = document.createElement('div');
       notification.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg';
-      notification.textContent = '铸造NFT失败';
+      notification.textContent = 'Failed to mint NFT';
       document.body.appendChild(notification);
       
       setTimeout(() => {
@@ -250,9 +250,9 @@ const Home: NextPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
       <Head>
-        <title>声音胶囊 | 比特币NFT声音存储</title>
+        <title>Sound Capsule | Bitcoin NFT Audio Storage</title>
         <meta
-          content="声音胶囊 - 将珍贵声音永久保存在比特币区块链上"
+          content="Sound Capsule - Permanently preserve precious sounds on the Bitcoin blockchain"
           name="description"
         />
         <link href="/favicon.ico" rel="icon" />
@@ -264,7 +264,7 @@ const Home: NextPage = () => {
           <div className="flex justify-between h-16 items-center">
             <div className="flex-shrink-0 flex items-center">
               <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
-                声音胶囊
+                Sound Capsule
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -278,10 +278,10 @@ const Home: NextPage = () => {
         {/* 英雄区域 */}
         <div className="mb-12 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
-            声音胶囊 - 比特币NFT版
+            Sound Capsule - Bitcoin NFT Edition
           </h1>
           <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-            将珍贵的声音永久保存在比特币区块链上。乡音、第一声爸妈、特殊事件录音，永不消逝。
+            Permanently preserve precious sounds on the Bitcoin blockchain. Hometown accents, baby's first words, special event recordings - never to be lost.
           </p>
         </div>
 
@@ -296,7 +296,7 @@ const Home: NextPage = () => {
                   : 'text-gray-300 hover:bg-gray-700'
               }`}
             >
-              探索声音
+              Explore Sounds
             </button>
             <button
               onClick={() => setActiveTab('upload')}
@@ -306,7 +306,7 @@ const Home: NextPage = () => {
                   : 'text-gray-300 hover:bg-gray-700'
               }`}
             >
-              上传新声音
+              Upload New Sound
             </button>
           </div>
         </div>
@@ -316,7 +316,7 @@ const Home: NextPage = () => {
           {activeTab === 'explore' ? (
             <div>
               <h2 className="text-2xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
-                探索声音胶囊
+                Explore Sound Capsules
               </h2>
               
               {isLoading ? (
@@ -355,7 +355,7 @@ const Home: NextPage = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                             </svg>
-                            <p className="mt-2 text-gray-300">声音胶囊</p>
+                            <p className="mt-2 text-gray-300">Sound Capsule</p>
                           </div>
                         ) : (
                           <div className="flex flex-col items-center justify-center">
@@ -406,7 +406,7 @@ const Home: NextPage = () => {
                           rel="noopener noreferrer"
                           className="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium rounded-md transition-colors"
                         >
-                          播放声音
+                          Play Sound
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
@@ -420,12 +420,12 @@ const Home: NextPage = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                   </svg>
-                  <p className="text-xl text-gray-400">还没有声音胶囊</p>
+                  <p className="text-xl text-gray-400">No sound capsules yet</p>
                   <button 
                     onClick={() => setActiveTab('upload')}
                     className="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-md transition-colors"
                   >
-                    上传你的第一个声音胶囊
+                    Upload your first sound capsule
                   </button>
                 </div>
               )}
@@ -433,7 +433,7 @@ const Home: NextPage = () => {
           ) : (
             <div>
               <h2 className="text-2xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-orange-400">
-                上传声音胶囊
+                Upload Sound Capsule
               </h2>
               
               <div className="max-w-xl mx-auto">
@@ -456,10 +456,10 @@ const Home: NextPage = () => {
                         </svg>
                       </div>
                       <p className="text-lg font-medium text-gray-300 mb-1">
-                        {file ? file.name : isConnected ? '拖放或点击上传声音文件' : '请先连接你的钱包'}
+                        {file ? file.name : isConnected ? 'Drag and drop or click to upload sound file' : 'Please connect your wallet first'}
                       </p>
                       <p className="text-sm text-gray-500">
-                        {isConnected ? '上传声音文件到IPFS，然后铭刻到比特币区块链上' : '连接钱包开始上传你的珍贵声音'}
+                        {isConnected ? 'Upload sound file to IPFS, then inscribe on Bitcoin blockchain' : 'Connect wallet to start uploading your precious sound'}
                       </p>
                     </div>
                   </div>
@@ -525,26 +525,26 @@ const Home: NextPage = () => {
                             ></div>
                           </div>
                           <div className="flex justify-between items-center mt-2 text-sm">
-                            <p className="text-gray-400">铸造NFT中...</p>
+                            <p className="text-gray-400">Minting NFT...</p>
                             <p className="text-gray-300 font-medium">{mintProgress}%</p>
                           </div>
                         </div>
                       ) : (
                         <div className="space-y-4">
                           <div className="p-4 bg-gray-700/50 rounded-lg border border-gray-600">
-                            <h4 className="text-lg font-medium text-white mb-2">声音已成功上传到IPFS！</h4>
-                            <p className="text-gray-300 mb-4">你现在可以选择将这个声音铸造为NFT，永久保存在区块链上。</p>
+                            <h4 className="text-lg font-medium text-white mb-2">Sound successfully uploaded to IPFS!</h4>
+                            <p className="text-gray-300 mb-4">You can now choose to mint this sound as an NFT, permanently preserving it on the blockchain.</p>
                             <div className="flex space-x-3">
                               <button
                                 onClick={mintNFT}
                                 disabled={!isConnected}
                                 className="flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-300 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white shadow-lg hover:shadow-purple-500/25"
                               >
-                                铸造为NFT
+                                Mint as NFT
                               </button>
                               <button
                                 onClick={() => {
-                                  // 清除所有状态
+                                  // Clear all states
                                   setShowNftOption(false);
                                   setActiveTab('explore');
                                   setFile(null);
@@ -556,7 +556,7 @@ const Home: NextPage = () => {
                                 }}
                                 className="flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-300 bg-gray-600 hover:bg-gray-500 text-white"
                               >
-                                稍后再说
+                                Maybe Later
                               </button>
                             </div>
                           </div>
@@ -573,31 +573,31 @@ const Home: NextPage = () => {
                           : 'bg-gray-700 text-gray-400 cursor-not-allowed'
                       }`}
                     >
-                      {!isConnected ? '请先连接钱包' : file ? '上传到IPFS' : '请先选择声音文件'}
+                      {!isConnected ? 'Please connect wallet' : file ? 'Upload to IPFS' : 'Select a sound file'}
                     </button>
                   )}
                 </div>
                 
                 <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-                  <h3 className="text-lg font-medium mb-4 text-gray-300">为什么要保存声音胶囊？</h3>
+                  <h3 className="text-lg font-medium mb-4 text-gray-300">Why preserve sound capsules?</h3>
                   <ul className="space-y-3">
                     <li className="flex items-start">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-400 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-gray-400">永久保存珍贵的乡音和家人声音</span>
+                      <span className="text-gray-400">Permanently preserve precious local dialects and family voices</span>
                     </li>
                     <li className="flex items-start">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-400 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-gray-400">比特币区块链确保声音记忆永不消逝</span>
+                      <span className="text-gray-400">Bitcoin blockchain ensures sound memories never fade</span>
                     </li>
                     <li className="flex items-start">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-400 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-gray-400">声音NFT可以作为独特的数字收藏品</span>
+                      <span className="text-gray-400">Sound NFTs can serve as unique digital collectibles</span>
                     </li>
                   </ul>
                 </div>
@@ -611,7 +611,7 @@ const Home: NextPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 mb-4 md:mb-0">
-              &copy; {new Date().getFullYear()} 声音胶囊. 由比特币区块链和IPFS提供支持.
+              &copy; {new Date().getFullYear()} Sound Capsule. Powered by Bitcoin blockchain and IPFS.
             </div>
             <div className="flex space-x-6">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
