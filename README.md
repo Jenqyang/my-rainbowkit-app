@@ -19,6 +19,8 @@ Sound Capsule is an audio storage platform based on the Bitcoin blockchain, allo
 - **Frontend Framework**: [Next.js](https://nextjs.org/) (Page Router)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Web3 Integration**:
+  - [clarity](https://clarity-lang.org/) - Bitcoin smart contract language
+  - [stacks](https://www.stacks.co/) - Bitcoin Layer 2
   - [RainbowKit](https://rainbowkit.com) - Wallet connection UI
   - [wagmi](https://wagmi.sh) - React Hooks for Ethereum
   - [viem](https://viem.sh) - Ethereum interaction library
@@ -67,6 +69,7 @@ pnpm dev
 │   ├── hooks/         # Custom React hooks
 │   ├── utils/         # Utility functions
 │   └── styles/        # Global styles
+|   └── contracts/     # Smart contracts
 ├── .env.local         # Environment variables
 └── next.config.js     # Next.js configuration
 ```

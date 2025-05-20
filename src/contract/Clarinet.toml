@@ -1,0 +1,11 @@
+﻿[project]
+name = "sound-capsule-nft-project"
+requirements = []
+
+[contracts.sound-capsule-nft]
+path = "contracts/sound-capsule-nft.clar"
+depends_on = []
+
+[repl]
+clarity_version = 1
+network = "simnet"
