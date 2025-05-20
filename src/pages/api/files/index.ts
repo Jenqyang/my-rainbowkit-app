@@ -29,8 +29,8 @@ export default async function handler(
 ) {
   // 确保环境变量存在
   if (!process.env.PINATA_JWT || !process.env.NEXT_PUBLIC_GATEWAY_URL) {
-    console.error("缺少必要的环境变量");
-    return res.status(500).json({ error: "服务器配置错误" });
+    console.error("Missing required environment variables");
+    return res.status(500).json({ error: "Server configuration error" });
   }
 
   if (req.method === "GET") {

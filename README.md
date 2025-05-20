@@ -1,76 +1,84 @@
-This is a [RainbowKit](https://rainbowkit.com) + [wagmi](https://wagmi.sh) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-rainbowkit`](/packages/create-rainbowkit).
+# Sound Capsule | Bitcoin NFT Audio Storage
+
+## Project Overview
+
+Sound Capsule is an audio storage platform based on the Bitcoin blockchain, allowing users to permanently preserve precious sounds as NFTs. Whether it's a hometown accent, a baby's first words, or recordings of special events, Sound Capsule ensures these valuable sound memories are never lost.
+
+🔗 Live Demo: [https://my-rainbowkit-app-wheat.vercel.app/](https://my-rainbowkit-app-wheat.vercel.app/)
+
+## Core Features
+
+- **Blockchain Audio Storage**: Permanently store audio files using Bitcoin blockchain and IPFS technology
+- **NFT Minting**: Mint audio files as unique NFTs
+- **Audio Browsing**: Explore the collection of uploaded audio capsules
+- **Audio Playback**: Play stored audio files directly on the platform
+- **Wallet Connection**: Seamless wallet connection experience via RainbowKit
+
+## Tech Stack
+
+- **Frontend Framework**: [Next.js](https://nextjs.org/) (Page Router)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Web3 Integration**:
+  - [RainbowKit](https://rainbowkit.com) - Wallet connection UI
+  - [wagmi](https://wagmi.sh) - React Hooks for Ethereum
+  - [viem](https://viem.sh) - Ethereum interaction library
+- **Storage**: [Pinata](https://pinata.cloud/) (IPFS storage)
+- **Package Management**: [pnpm](https://pnpm.io/)
+
+## Quick Start
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/yourusername/sound-capsule.git
+cd sound-capsule
+```
+
+2. Install dependencies
+
+```bash
+pnpm install
+```
+
+3. Configure environment variables
+
+Create a `.env` file and add the necessary environment variables:
+
+```
+PINATA_JWT=your_pinata_api_key
+NEXT_PUBLIC_GATEWAY_URL=your_pinata_gateway_url
+```
+
+4. Start the development server
+
+```bash
+pnpm dev
+```
+
+5. Visit [http://localhost:3000](http://localhost:3000) to view the application
 
 ## Project Structure
 
-```mermaid
-graph TD
-    subgraph Frontend
-        A[pages/_app.tsx] --> B[RainbowKit Provider]
-        A --> C[WagmiProvider]
-        A --> D[QueryClientProvider]
-        B --> E[pages/index.tsx]
-        C --> E
-        D --> E
-    end
-    
-    subgraph Web3
-        F[wagmi.ts] --> C
-        F --> G[Blockchain Networks]
-        G --> G1[Mainnet]
-        G --> G2[Polygon]
-        G --> G3[Optimism]
-        G --> G4[Arbitrum]
-        G --> G5[Base]
-        G --> G6[Sepolia - Optional]
-    end
-    
-    subgraph Backend
-        H[API Routes] --> I[/api/files]
-        I --> J[GET - Fetch Files]
-        I --> K[POST - Upload File]
-        K --> L[Pinata IPFS Service]
-        J --> L
-    end
-    
-    subgraph User Interface
-        E --> M[ConnectButton]
-        E --> N[File Upload]
-        E --> O[File Explorer]
-        M --> P[Wallet Connection]
-        N --> K
-        O --> J
-    end
-    
-    subgraph Styles
-        Q[styles/globals.css] --> A
-        R[styles/Home.module.css] --> E
-    end
+```
+├── public/            # Static assets
+├── src/
+│   ├── components/    # React components
+│   ├── pages/         # Next.js pages
+│   ├── hooks/         # Custom React hooks
+│   ├── utils/         # Utility functions
+│   └── styles/        # Global styles
+├── .env.local         # Environment variables
+└── next.config.js     # Next.js configuration
 ```
 
-## Getting Started
+## Contribution Guidelines
 
-First, run the development server:
+Contributions are welcome! Feel free to submit Pull Requests or create Issues.
 
-```bash
-npm run dev
-```
+## License
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+© 2025 Sound Capsule. All rights reserved.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+---
 
-## Learn More
-
-To learn more about this stack, take a look at the following resources:
-
-- [RainbowKit Documentation](https://rainbowkit.com) - Learn how to customize your wallet connection flow.
-- [wagmi Documentation](https://wagmi.sh) - Learn how to interact with Ethereum.
-- [Next.js Documentation](https://nextjs.org/docs) - Learn how to build a Next.js application.
-
-You can check out [the RainbowKit GitHub repository](https://github.com/rainbow-me/rainbowkit) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Powered by Bitcoin blockchain and IPFS.
