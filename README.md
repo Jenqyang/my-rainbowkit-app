@@ -70,8 +70,11 @@ pnpm dev
 │   ├── utils/         # Utility functions
 │   └── styles/        # Global styles
 |   └── contracts/     # Smart contracts
-├── .env.local         # Environment variables
+|   └── deployments/   # Deployment scripts
+├── .env        # Environment variables
 └── next.config.js     # Next.js configuration
+└── package.json        # Project metadata and dependencies
+└── README.md           # Project documentation
 ```
 
 ## Contribution Guidelines
