@@ -1,0 +1,11 @@
+[network]
+name = "testnet"
+stacks_node_url = "https://stacks-node-api.testnet.stacks.co"
+
+[deployer]
+mnemonic = ""
+
+
+[[contracts]]
+name = "sound-capsule-nft"
+path = "contracts/sound-capsule-nft.clar"

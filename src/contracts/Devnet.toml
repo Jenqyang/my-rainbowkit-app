@@ -1,0 +1,10 @@
+[network]
+name = "simnet"
+mnemonic = "fetch client salmon tuna immense palace guard armor tuna pattern square monkey tuna describe order"
+epoch = "2.4"
+
+[accounts.deployer]
+balance = 1000000000000000
+
+[accounts.wallet_1]
+balance = 1000000000000000
